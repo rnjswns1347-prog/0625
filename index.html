@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>1/16 Master Piece - MBTI Context Fixed</title>
+  <title>1/16 Master Piece - Final QA Complete</title>
   <style>
     /* ==== 1. 반응형 변수 및 기본 설정 ==== */
     :root {
@@ -23,10 +23,7 @@
     #flash-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #E74C3C; opacity: 0; pointer-events: none; z-index: 9999; }
 
     /* ==== 2. 첫 화면 1/16 분수 디자인 ==== */
-    #fraction-box { 
-      font-family: 'Times New Roman', serif; font-weight: bold; font-style: italic; 
-      cursor: pointer; display: flex; align-items: center; z-index: 50; user-select: none; 
-    }
+    #fraction-box { font-family: 'Times New Roman', serif; font-weight: bold; font-style: italic; cursor: pointer; display: flex; align-items: center; z-index: 50; user-select: none; }
     .char { display: inline-block; font-size: 8rem; position: relative; } 
     .char.top { font-size: 6rem; top: -35px; left: 15px; } 
     .char.slash { font-size: 10rem; margin: 0 -20px; font-weight: 300; transform: rotate(-30deg); transform-origin: center; } 
@@ -41,25 +38,14 @@
     #roulette-wheel { background: conic-gradient(#FFFFFF 0deg 22.5deg, var(--color-center) 22.5deg 45deg, #FFFFFF 45deg 67.5deg, var(--color-center) 67.5deg 90deg, #FFFFFF 90deg 112.5deg, var(--color-center) 112.5deg 135deg, #FFFFFF 135deg 157.5deg, var(--color-center) 157.5deg 180deg, #FFFFFF 180deg 202.5deg, var(--color-center) 202.5deg 225deg, #FFFFFF 225deg 247.5deg, var(--color-center) 247.5deg 270deg, #FFFFFF 270deg 292.5deg, var(--color-center) 292.5deg 315deg, #FFFFFF 315deg 337.5deg, var(--color-center) 337.5deg 360deg); }
     .pointer { position: absolute; top: -190px; left: -15px; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333333; opacity: 0; transform: translateY(-20px); z-index: 10; pointer-events: none;}
     
-    #switch-panel { gap: 10px; } 
-    .switch-dot { width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-dot); cursor: pointer; }
-    
+    #switch-panel { gap: 10px; } .switch-dot { width: 20px; height: 20px; border-radius: 50%; background-color: var(--color-dot); cursor: pointer; }
     #ox-panel { gap: 10px; } .ox-slots { display: flex; gap: 5px; background: #333; padding: 5px; border-radius: 8px; } .ox-slot { width: 30px; height: 40px; background: #FFF; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: bold; color: #333; overflow: hidden; } #ox-lever { width: 10px; height: 40px; position: relative; } .lever-bar { position: absolute; bottom: 0; left: 3px; width: 4px; height: 30px; background: #999; transform-origin: bottom center; } .lever-knob { position: absolute; top: 0; left: 0; width: 10px; height: 10px; background: #E74C3C; border-radius: 50%; z-index: 2; transform: translateY(0); }
     
-    /* ==== [수정됨] MBTI CSS ==== */
-    #mbti-panel { flex-direction: column; background: #F5F5F5; box-sizing: border-box; padding: 15px; border-radius: 20px; width: 200px; height: 250px; } 
-    .chat-area { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; width: 100%; } 
-    .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 0.9rem; max-width: 80%; opacity: 0; transform: translateY(10px); } 
-    .chat-bubble.left { background: #E0E0E0; align-self: flex-start; border-bottom-left-radius: 4px; color: #333; } 
-    .chat-bubble.right { background: #333; color: #FFF; align-self: flex-end; border-bottom-right-radius: 4px; } 
-    .mbti-keyboard { display: flex; justify-content: space-between; gap: 5px; opacity: 0; pointer-events: none; margin-top: 10px; width: 100%; } 
-    .mbti-pair { display: flex; flex-direction: column; gap: 5px; flex: 1; } 
-    .mbti-key { background: #CCC; border: none; padding: 10px 0; border-radius: 8px; font-weight: bold; color: #333; cursor: pointer; font-size: 0.9rem; transition: 0.2s; } 
-    .mbti-key.selected { background: #333; color: #FFF; }
+    #mbti-panel { flex-direction: column; background: #F5F5F5; box-sizing: border-box; padding: 15px; border-radius: 20px; width: 200px; height: 250px; } .chat-area { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; width: 100%; } .chat-bubble { padding: 8px 12px; border-radius: 12px; font-size: 0.9rem; max-width: 80%; opacity: 0; transform: translateY(10px); } .chat-bubble.left { background: #E0E0E0; align-self: flex-start; border-bottom-left-radius: 4px; color: #333; } .chat-bubble.right { background: #333; color: #FFF; align-self: flex-end; border-bottom-right-radius: 4px; } .mbti-keyboard { display: flex; justify-content: space-between; gap: 5px; opacity: 0; pointer-events: none; margin-top: 10px; width: 100%; } .mbti-pair { display: flex; flex-direction: column; gap: 5px; flex: 1; } .mbti-key { background: #CCC; border: none; padding: 10px 0; border-radius: 8px; font-weight: bold; color: #333; cursor: pointer; font-size: 0.9rem; transition: 0.2s; } .mbti-key.selected { background: #333; color: #FFF; }
 
     #russian-panel { flex-direction: column; gap: 20px; } #cylinder-box { position: relative; width: 90px; height: 90px; } .cylinder-center { position: absolute; top: 50%; left: 50%; width: 22px; height: 22px; background: #555; border-radius: 50%; transform: translate(-50%, -50%); z-index: 2; box-shadow: 0 0 5px rgba(0,0,0,0.5); } .chamber { position: absolute; top: 50%; left: 50%; width: 14px; height: 14px; background: #222; border-radius: 50%; transform: translate(-50%, -50%) rotate(calc(360deg / 16 * var(--i))) translateY(-33px); box-shadow: inset 0 2px 4px rgba(0,0,0,0.8); } #fire-btn { padding: 8px 24px; background: #E74C3C; color: white; border: none; border-radius: 20px; font-weight: bold; font-size: 1rem; cursor: pointer; pointer-events: none; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; } #fire-btn:active { transform: scale(0.95); }
 
-    .small-circle { position: absolute; top: calc(var(--small-size) / -2); left: calc(var(--small-size) / -2); width: var(--small-size); height: var(--small-size); background-color: var(--color-small); border-radius: 50%; transform: rotate(var(--deg)) translateY(calc(var(--radius) * -1)); opacity: 0; cursor: pointer; z-index: 20; } .extra-circle { pointer-events: none; }
+    .small-circle { position: absolute; top: calc(var(--small-size) / -2); left: calc(var(--small-size) / -2); width: var(--small-size); height: var(--small-size); background-color: var(--color-small); border-radius: 50%; transform: rotate(var(--deg)) translateY(calc(var(--radius) * -1)); opacity: 0; cursor: pointer; z-index: 20; transition: background-color 0.3s; } .extra-circle { pointer-events: none; }
     canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; z-index: 5; }
     #drag-avatar, #pinball-ball { position: absolute; top: 0; left: 0; width: var(--small-size); height: var(--small-size); background-color: #333333; border-radius: 50%; display: none; z-index: 100; } #drag-avatar { cursor: grab; } #drag-avatar:active { cursor: grabbing; }
   </style>
@@ -81,7 +67,6 @@
       <div id="roulette-wheel" class="panel"></div>
       <div id="switch-panel" class="panel"><div class="switch-dot" data-bit="8"></div><div class="switch-dot" data-bit="4"></div><div class="switch-dot" data-bit="2"></div><div class="switch-dot" data-bit="1"></div></div>
       <div id="ox-panel" class="panel"><div class="ox-slots"><div class="ox-slot" id="ox-1">-</div><div class="ox-slot" id="ox-2">-</div><div class="ox-slot" id="ox-3">-</div><div class="ox-slot" id="ox-4">-</div></div><div id="ox-lever"><div class="lever-knob"></div><div class="lever-bar"></div></div></div>
-      
       <div id="mbti-panel" class="panel">
         <div class="chat-area">
           <div class="chat-bubble right" id="msg-1">너 MBTI 뭐야?</div>
@@ -95,12 +80,19 @@
           <div class="mbti-pair"><button class="mbti-key" data-type="J">J</button><button class="mbti-key" data-type="P">P</button></div>
         </div>
       </div>
-
       <div id="russian-panel" class="panel"><div id="cylinder-box"><div class="cylinder-center"></div></div><button id="fire-btn">FIRE</button></div>
     </div>
+    
     <div class="pointer" id="roulette-pointer"></div>
 
-    <div class="small-circle base-circle" id="btn-pinball" style="--deg: 0deg;"></div> <div class="small-circle base-circle" id="btn-roulette" style="--deg: 45deg;"></div> <div class="small-circle base-circle" id="btn-ladder" style="--deg: 90deg;"></div> <div class="small-circle base-circle" id="btn-switch" style="--deg: 135deg;"></div> <div class="small-circle base-circle" id="btn-lottery" style="--deg: 180deg;"></div> <div class="small-circle base-circle" id="btn-ox" style="--deg: 225deg;"></div> <div class="small-circle base-circle" id="btn-mbti" style="--deg: 270deg;"></div> <div class="small-circle base-circle" id="btn-russian" style="--deg: 315deg;"></div> 
+    <div class="small-circle base-circle" id="btn-pinball" style="--deg: 0deg;"></div> 
+    <div class="small-circle base-circle" id="btn-roulette" style="--deg: 45deg;"></div> 
+    <div class="small-circle base-circle" id="btn-ladder" style="--deg: 90deg;"></div> 
+    <div class="small-circle base-circle" id="btn-switch" style="--deg: 135deg;"></div> 
+    <div class="small-circle base-circle" id="btn-lottery" style="--deg: 180deg;"></div> 
+    <div class="small-circle base-circle" id="btn-ox" style="--deg: 225deg;"></div> 
+    <div class="small-circle base-circle" id="btn-mbti" style="--deg: 270deg;"></div> 
+    <div class="small-circle base-circle" id="btn-russian" style="--deg: 315deg;"></div> 
     
     <div class="small-circle extra-circle" style="--deg: 22.5deg;"></div><div class="small-circle extra-circle" style="--deg: 67.5deg;"></div><div class="small-circle extra-circle" style="--deg: 112.5deg;"></div><div class="small-circle extra-circle" style="--deg: 157.5deg;"></div><div class="small-circle extra-circle" style="--deg: 202.5deg;"></div><div class="small-circle extra-circle" style="--deg: 247.5deg;"></div><div class="small-circle extra-circle" style="--deg: 292.5deg;"></div><div class="small-circle extra-circle" style="--deg: 337.5deg;"></div>
   </div>
@@ -110,6 +102,7 @@
 
     <script>
     gsap.registerPlugin(Draggable);
+    
     gsap.set(['#drag-avatar', '#pinball-ball'], { xPercent: -50, yPercent: -50 });
     gsap.set('#slash', { rotation: 30 }); 
 
@@ -123,7 +116,7 @@
     window.addEventListener('resize', resizeCanvas); 
     resizeCanvas();
 
-    // 시작 화면
+    // 시작 물리 애니메이션
     document.getElementById('fraction-box').addEventListener('click', function(e) {
       e.stopPropagation(); 
       const tl = gsap.timeline();
@@ -146,6 +139,9 @@
     });
 
     function resetAllPreviews() {
+      // 모든 버튼 색상을 초기화
+      gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); 
+      
       if (activeMenu === 'pinball') resetPinball();
       if (activeMenu === 'roulette') resetRoulette();
       if (activeMenu === 'ladder') resetLadder();
@@ -159,64 +155,88 @@
 
     // [1] 핀볼
     const btnPinball = document.getElementById('btn-pinball'); let pinballTreeData = {};
-    function previewPinball() { ctx.clearRect(0, 0, canvas.width, canvas.height); const rect = btnPinball.getBoundingClientRect(); const startX = rect.left + rect.width / 2, startY = rect.top + rect.height / 2; const availableHeight = window.innerHeight - startY - 40, gapY = availableHeight / 4, startWidth = window.innerWidth * 0.75; ctx.strokeStyle = '#CCCCCC'; ctx.fillStyle = '#999999'; ctx.lineWidth = 1.5; function drawBranch(x, y, w, level) { ctx.beginPath(); ctx.arc(x, y, isMobile() ? 3 : 5, 0, Math.PI * 2); ctx.fill(); if (level === 4) return; const nextY = y + gapY, leftX = x - w / 4, rightX = x + w / 4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(leftX, nextY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(rightX, nextY); ctx.stroke(); drawBranch(leftX, nextY, w / 2, level + 1); drawBranch(rightX, nextY, w / 2, level + 1); } drawBranch(startX, startY, startWidth, 0); pinballTreeData = { startX, startY, gapY, startWidth }; gsap.to('.base-circle:not(#btn-pinball), #center-circle', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to(canvas, { opacity: 1, duration: 0.5 }); }
-    function resetPinball() { gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to(canvas, { opacity: 0, duration: 0.3 }); }
-    function executePinball() { isPlaying = true; const ball = document.getElementById('pinball-ball'); gsap.set(ball, { display: 'block', x: pinballTreeData.startX, y: pinballTreeData.startY, scale: 0 }); gsap.to(btnPinball, { opacity: 0, duration: 0.2 }); const tl = gsap.timeline({ onComplete: () => { setTimeout(() => { gsap.to(canvas, { opacity: 0 }); gsap.set(ball, { display: 'none' }); gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05 }); isPlaying = false; activeMenu = null; }, 1200); } }); tl.to(ball, { scale: 1, duration: 0.3, ease: 'back.out(2)' }); let curX = pinballTreeData.startX, curY = pinballTreeData.startY, curW = pinballTreeData.startWidth; for (let i = 0; i < 4; i++) { curX = (Math.random() < 0.5) ? curX + curW / 4 : curX - curW / 4; curY += pinballTreeData.gapY; curW /= 2; tl.to(ball, { x: curX, y: curY, duration: 0.55, ease: 'bounce.out' }); } }
+    function previewPinball() { 
+      gsap.to(btnPinball, { backgroundColor: '#888888', duration: 0.3 }); // 대기 버튼 하이라이트
+      ctx.clearRect(0, 0, canvas.width, canvas.height); const rect = btnPinball.getBoundingClientRect(); const startX = rect.left + rect.width / 2, startY = rect.top + rect.height / 2; const availableHeight = window.innerHeight - startY - 40, gapY = availableHeight / 4, startWidth = window.innerWidth * 0.75; ctx.strokeStyle = '#CCCCCC'; ctx.fillStyle = '#999999'; ctx.lineWidth = 1.5; function drawBranch(x, y, w, level) { ctx.beginPath(); ctx.arc(x, y, isMobile() ? 3 : 5, 0, Math.PI * 2); ctx.fill(); if (level === 4) return; const nextY = y + gapY, leftX = x - w / 4, rightX = x + w / 4; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(leftX, nextY); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(rightX, nextY); ctx.stroke(); drawBranch(leftX, nextY, w / 2, level + 1); drawBranch(rightX, nextY, w / 2, level + 1); } drawBranch(startX, startY, startWidth, 0); pinballTreeData = { startX, startY, gapY, startWidth }; gsap.to('.base-circle:not(#btn-pinball), #center-circle', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to(canvas, { opacity: 1, duration: 0.5 }); 
+    }
+    function resetPinball() { gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); gsap.to('#center-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to(canvas, { opacity: 0, duration: 0.3 }); }
+    function executePinball() { isPlaying = true; const ball = document.getElementById('pinball-ball'); gsap.set(ball, { display: 'block', x: pinballTreeData.startX, y: pinballTreeData.startY, scale: 0 }); gsap.to(btnPinball, { opacity: 0, duration: 0.2 }); const tl = gsap.timeline({ onComplete: () => { setTimeout(() => { gsap.to(canvas, { opacity: 0 }); gsap.set(ball, { display: 'none' }); gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.5, stagger: 0.05 }); gsap.to('#center-circle', { opacity: 1, scale: 1, duration: 0.5 }); isPlaying = false; activeMenu = null; }, 1200); } }); tl.to(ball, { scale: 1, duration: 0.3, ease: 'back.out(2)' }); let curX = pinballTreeData.startX, curY = pinballTreeData.startY, curW = pinballTreeData.startWidth; for (let i = 0; i < 4; i++) { curX = (Math.random() < 0.5) ? curX + curW / 4 : curX - curW / 4; curY += pinballTreeData.gapY; curW /= 2; tl.to(ball, { x: curX, y: curY, duration: 0.55, ease: 'bounce.out' }); } }
     btnPinball.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) { resetAllPreviews(); previewPinball(); activeMenu = 'pinball'; } }); btnPinball.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'pinball') resetPinball(); }); btnPinball.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); if (isPlaying) return; if (activeMenu !== 'pinball') { resetAllPreviews(); previewPinball(); activeMenu = 'pinball'; } else { executePinball(); } });
 
-    // [2] 룰렛
+    // [2] 룰렛 (틸팅 버그 완벽 수정)
     const btnRoulette = document.getElementById('btn-roulette');
-    function previewRoulette() { gsap.to('#center-circle', { scale: isMobile() ? 2 : 2.5, duration: 0.5, ease: 'power2.out' }); gsap.to('#roulette-wheel', { opacity: 1, duration: 0.5 }); gsap.to('.base-circle:not(#btn-roulette)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#roulette-pointer', { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: 'back.out(1.7)' }); }
-    function resetRoulette() { gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'power2.out' }); gsap.to('#roulette-wheel', { opacity: 0, duration: 0.5 }); gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to('#roulette-pointer', { opacity: 0, y: -20, duration: 0.3 }); }
-    function executeRoulette() { isPlaying = true; gsap.to('#center-circle', { rotation: "+=" + (1440 + Math.floor(Math.random() * 360)), duration: 4, ease: 'power4.out', onComplete: () => { isPlaying = false; activeMenu = null; } }); }
+    function previewRoulette() { 
+      gsap.to(btnRoulette, { backgroundColor: '#888888', duration: 0.3 });
+      gsap.to('#center-circle', { scale: isMobile() ? 2 : 2.5, duration: 0.5, ease: 'power2.out' }); gsap.to('#roulette-wheel', { opacity: 1, duration: 0.5 }); gsap.to('.base-circle:not(#btn-roulette)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#roulette-pointer', { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: 'back.out(1.7)' }); 
+    }
+    function resetRoulette() { 
+      gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 });
+      gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'power2.out' }); gsap.to('#roulette-wheel', { opacity: 0, duration: 0.5 }); gsap.to('#roulette-pointer', { opacity: 0, y: -20, duration: 0.3 }); 
+    }
+    function executeRoulette() { 
+      isPlaying = true; 
+      // 컨테이너 전체가 아닌 '룰렛 휠' 자체만 돌려서 다른 모듈의 기울어짐 방지
+      gsap.to('#roulette-wheel', { 
+        rotation: "+=" + (1440 + Math.floor(Math.random() * 360)), 
+        duration: 4, ease: 'power4.out', 
+        onComplete: () => { isPlaying = false; } // activeMenu 유지하여 바로 닫히지 않게 함
+      }); 
+    }
     btnRoulette.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) { resetAllPreviews(); previewRoulette(); activeMenu = 'roulette'; } }); btnRoulette.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'roulette') resetRoulette(); }); btnRoulette.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying) return; if (activeMenu !== 'roulette') { resetAllPreviews(); previewRoulette(); activeMenu = 'roulette'; } else { executeRoulette(); } });
 
     // [3] 사다리
     const btnLadder = document.getElementById('btn-ladder'); let ladderData = { bridges: [], columnsX: [], startY: 0, endY: 0 };
     function previewLadder() { gsap.to('.base-circle, #center-circle', { opacity: 0, scale: 0, duration: 0.3 }); ctx.clearRect(0, 0, canvas.width, canvas.height); ladderData.bridges = []; ladderData.columnsX = []; const margin = isMobile() ? 20 : 30, spacing = (canvas.width - margin * 2) / 15; ladderData.startY = isMobile() ? 60 : 80; ladderData.endY = canvas.height - ladderData.startY; ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)'; ctx.lineWidth = 2; for (let i = 0; i < 16; i++) { const x = margin + (i * spacing); ladderData.columnsX.push(x); ctx.beginPath(); ctx.moveTo(x, ladderData.startY); ctx.lineTo(x, ladderData.endY); ctx.stroke(); } const rows = 15, rowHeight = (ladderData.endY - ladderData.startY) / rows; for (let r = 1; r < rows; r++) { for (let c = 0; c < 15; c++) { if (Math.random() < 0.35) { ladderData.bridges.push({ y: ladderData.startY + (r * rowHeight) + (Math.random()*10-5), col1: c, col2: c + 1 }); c++; } } } ladderData.bridges.sort((a, b) => a.y - b.y); gsap.to(canvas, { opacity: 1, duration: 0.5 }); gsap.set('#drag-avatar', { display: 'block', x: window.innerWidth/2, y: window.innerHeight/2, scale: 0 }); gsap.to('#drag-avatar', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); }
-    function resetLadder() { gsap.to(canvas, { opacity: 0, duration: 0.5 }); gsap.to('#drag-avatar', { scale: 0, duration: 0.3, onComplete: () => document.getElementById('drag-avatar').style.display = 'none' }); gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05 }); }
+    function resetLadder() { gsap.to(canvas, { opacity: 0, duration: 0.5 }); gsap.to('#drag-avatar', { scale: 0, duration: 0.3, onComplete: () => document.getElementById('drag-avatar').style.display = 'none' }); gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.5, stagger: 0.05 }); gsap.to('#center-circle', { opacity: 1, scale: 1, duration: 0.5 }); }
     btnLadder.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying && activeMenu !== 'ladder') previewLadder(); }); btnLadder.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'ladder') resetLadder(); }); btnLadder.addEventListener('click', (e) => { e.stopPropagation(); e.preventDefault(); if (isPlaying) return; if (activeMenu !== 'ladder') { resetAllPreviews(); previewLadder(); activeMenu = 'ladder'; } });
     Draggable.create('#drag-avatar', { type: "x,y", onPress: function() { gsap.to(this.target, { scale: 0.8, duration: 0.2 }); }, onRelease: function() { isPlaying = true; gsap.to(this.target, { scale: 1, duration: 0.2 }); const currentX = this.x; let closestCol = 0, minDiff = Infinity; ladderData.columnsX.forEach((colX, index) => { if (Math.abs(currentX - colX) < minDiff) { minDiff = Math.abs(currentX - colX); closestCol = index; } }); gsap.to(this.target, { x: ladderData.columnsX[closestCol], y: ladderData.startY, duration: 0.3, onComplete: () => { let currentCol = closestCol, currentY = ladderData.startY; ctx.beginPath(); ctx.moveTo(ladderData.columnsX[currentCol], currentY); ctx.strokeStyle = '#333333'; ctx.lineWidth = isMobile() ? 3 : 4; const tl = gsap.timeline({ onUpdate: function() { const rx = gsap.getProperty('#drag-avatar', 'x'); const ry = gsap.getProperty('#drag-avatar', 'y'); ctx.lineTo(rx, ry); ctx.stroke(); }, onComplete: () => { setTimeout(() => { resetLadder(); isPlaying = false; activeMenu = null; }, 1000); } }); for (let bridge of ladderData.bridges) { if (bridge.col1 === currentCol || bridge.col2 === currentCol) { tl.to('#drag-avatar', { y: bridge.y, duration: Math.abs(bridge.y - currentY)/300, ease: "none" }); currentCol = (currentCol === bridge.col1) ? bridge.col2 : bridge.col1; tl.to('#drag-avatar', { x: ladderData.columnsX[currentCol], duration: 0.2, ease: "none" }); currentY = bridge.y; } } tl.to('#drag-avatar', { y: ladderData.endY, duration: Math.abs(ladderData.endY - currentY)/300, ease: "none" }); } }); } });
 
     // [4] 스위치
     const btnSwitch = document.getElementById('btn-switch'); let targetBinary = 0; let switchAttempts = 0; 
-    function previewSwitch() { gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle:not(#btn-switch)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#switch-panel', { opacity: 1, duration: 0.4 }); }
-    function resetSwitch() { gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to('#switch-panel', { opacity: 0, duration: 0.4 }); }
+    function previewSwitch() { gsap.to(btnSwitch, { backgroundColor: '#888888', duration: 0.3 }); gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle:not(#btn-switch)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#switch-panel', { opacity: 1, duration: 0.4 }); }
+    function resetSwitch() { gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' }); gsap.to('#switch-panel', { opacity: 0, duration: 0.4 }); }
     function executeSwitch() { isPlaying = true; switchAttempts = 0; targetBinary = Math.floor(Math.random() * 15) + 1; gsap.set(btnSwitch, { opacity: 0, pointerEvents: 'none' }); gsap.to('#switch-panel', { opacity: 1, duration: 0.3 }); document.getElementById('switch-panel').style.pointerEvents = 'auto'; document.querySelectorAll('.switch-dot').forEach(dot => { dot.classList.remove('active'); gsap.set(dot, { backgroundColor: '#999999' }); }); }
     btnSwitch.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) { resetAllPreviews(); previewSwitch(); activeMenu = 'switch'; } }); btnSwitch.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'switch') resetSwitch(); }); btnSwitch.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying) return; if (activeMenu !== 'switch') { resetAllPreviews(); previewSwitch(); activeMenu = 'switch'; } else { executeSwitch(); } });
-    document.querySelectorAll('.switch-dot').forEach(dot => { dot.addEventListener('click', function(e) { e.stopPropagation(); this.classList.toggle('active'); gsap.to(this, { backgroundColor: this.classList.contains('active') ? '#333333' : '#999999', duration: 0.2 }); let currentVal = 0; document.querySelectorAll('.switch-dot').forEach(d => { if (d.classList.contains('active')) currentVal += parseInt(d.getAttribute('data-bit')); }); const isMobileEnv = window.innerWidth <= 600; if (currentVal === targetBinary) { document.getElementById('switch-panel').style.pointerEvents = 'none'; const tl = gsap.timeline(); tl.to('.switch-dot', { backgroundColor: '#4CAF50', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 1 }).to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; }); } else { switchAttempts++; if (switchAttempts >= 5) { document.getElementById('switch-panel').style.pointerEvents = 'none'; const correctDots = []; document.querySelectorAll('.switch-dot').forEach(d => { const bit = parseInt(d.getAttribute('data-bit')); if ((targetBinary & bit) === bit) correctDots.push(d); }); const tl = gsap.timeline(); tl.to(correctDots, { backgroundColor: '#FFD700', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 3 }).to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; }); } } }); });
+    document.querySelectorAll('.switch-dot').forEach(dot => { dot.addEventListener('click', function(e) { e.stopPropagation(); this.classList.toggle('active'); gsap.to(this, { backgroundColor: this.classList.contains('active') ? '#333333' : '#999999', duration: 0.2 }); let currentVal = 0; document.querySelectorAll('.switch-dot').forEach(d => { if (d.classList.contains('active')) currentVal += parseInt(d.getAttribute('data-bit')); }); const isMobileEnv = window.innerWidth <= 600; if (currentVal === targetBinary) { document.getElementById('switch-panel').style.pointerEvents = 'none'; const tl = gsap.timeline(); tl.to('.switch-dot', { backgroundColor: '#4CAF50', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 1 }).to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, backgroundColor: 'var(--color-small)', stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; }); } else { switchAttempts++; if (switchAttempts >= 5) { document.getElementById('switch-panel').style.pointerEvents = 'none'; const correctDots = []; document.querySelectorAll('.switch-dot').forEach(d => { const bit = parseInt(d.getAttribute('data-bit')); if ((targetBinary & bit) === bit) correctDots.push(d); }); const tl = gsap.timeline(); tl.to(correctDots, { backgroundColor: '#FFD700', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 3 }).to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, backgroundColor: 'var(--color-small)', stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; }); } } }); });
 
     // [5] 제비뽑기
     const btnLottery = document.getElementById('btn-lottery'); let isLotteryLocked = false; let isLotteryPlayable = false; let winningLotteryElement = null;
-    function previewLottery() { gsap.to('.extra-circle', { opacity: 1, scale: 1, duration: 0.3, stagger: 0.02 }); }
-    function resetLottery() { if(!isLotteryLocked) gsap.to('.extra-circle', { opacity: 0, scale: 0, duration: 0.3 }); }
+    function previewLottery() { gsap.to(btnLottery, { backgroundColor: '#888888', duration: 0.3 }); gsap.to('.extra-circle', { opacity: 1, scale: 1, duration: 0.3, stagger: 0.02 }); }
+    function resetLottery() { if(!isLotteryLocked) { gsap.to('.base-circle', { backgroundColor: 'var(--color-small)', duration: 0.3 }); gsap.to('.extra-circle', { opacity: 0, scale: 0, duration: 0.3 }); } }
     function executeLottery() { if (isLotteryLocked) return; isPlaying = true; isLotteryLocked = true; gsap.set('.extra-circle', { pointerEvents: 'auto' }); gsap.to('#center-circle', { scale: 0, duration: 0.4, ease: 'back.in(1.5)' }); const allCircles = document.querySelectorAll('.small-circle'); winningLotteryElement = allCircles[Math.floor(Math.random() * allCircles.length)]; setTimeout(() => { isLotteryPlayable = true; }, 100); }
     btnLottery.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying && !isLotteryLocked) { resetAllPreviews(); previewLottery(); activeMenu = 'lottery'; } }); btnLottery.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && !isLotteryLocked && activeMenu !== 'lottery') resetLottery(); }); btnLottery.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying && !isLotteryLocked) return; if (activeMenu !== 'lottery') { resetAllPreviews(); previewLottery(); activeMenu = 'lottery'; } else { executeLottery(); } });
     document.querySelectorAll('.small-circle').forEach(circle => { circle.addEventListener('click', function(e) { if (!isLotteryLocked || !isLotteryPlayable) return; e.stopPropagation(); isLotteryPlayable = false; const tl = gsap.timeline(); if (this === winningLotteryElement) { tl.to(this, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 }).to(this, { backgroundColor: '#E0E0E0', boxShadow: 'none', scale: 1, duration: 0.2 }).call(finishLottery); } else { tl.to(this, { opacity: 0, scale: 0, duration: 0.3 }).to(winningLotteryElement, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 }, "+=0.2").to(winningLotteryElement, { backgroundColor: '#E0E0E0', boxShadow: 'none', scale: 1, duration: 0.2 }).call(finishLottery); } }); });
-    function finishLottery() { gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); isLotteryLocked = false; isPlaying = false; activeMenu = null; }
+    function finishLottery() { gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); isLotteryLocked = false; isPlaying = false; activeMenu = null; }
 
     // [6] OX 룰렛
     const btnOX = document.getElementById('btn-ox'); const oxSlots = document.querySelectorAll('.ox-slot'); let oxIntervals = [];
-    function previewOX() { gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle:not(#btn-ox)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#ox-panel', { opacity: 1, duration: 0.4 }); }
-    function resetOX() { gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to('#ox-panel', { opacity: 0, duration: 0.4 }); oxSlots.forEach(slot => slot.innerText = '-'); }
+    function previewOX() { gsap.to(btnOX, { backgroundColor: '#888888', duration: 0.3 }); gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle:not(#btn-ox)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#ox-panel', { opacity: 1, duration: 0.4 }); }
+    function resetOX() { gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' }); gsap.to('#ox-panel', { opacity: 0, duration: 0.4 }); oxSlots.forEach(slot => slot.innerText = '-'); }
     function executeOX() { isPlaying = true; const tlLever = gsap.timeline(); tlLever.to('.lever-knob', { y: 25, duration: 0.2, ease: 'power1.inOut' }).to('.lever-bar', { scaleY: -1, duration: 0.2, ease: 'power1.inOut' }, "<").to('.lever-knob', { y: 0, duration: 0.2, ease: 'power1.inOut' }, "+=0.2").to('.lever-bar', { scaleY: 1, duration: 0.2, ease: 'power1.inOut' }, "<"); oxIntervals = []; oxSlots.forEach((slot, index) => { const interval = setInterval(() => { slot.innerText = Math.random() > 0.5 ? 'O' : 'X'; }, 50); oxIntervals.push(interval); }); const tlSlots = gsap.timeline({ delay: 0.8 }); oxSlots.forEach((slot, index) => { tlSlots.call(() => { clearInterval(oxIntervals[index]); slot.innerText = Math.random() > 0.5 ? 'O' : 'X'; gsap.fromTo(slot, { scale: 1.2, color: '#E74C3C' }, { scale: 1, color: '#333', duration: 0.3 }); }, null, `+=${0.3}`); }); tlSlots.call(() => { setTimeout(() => { resetOX(); isPlaying = false; activeMenu = null; }, 1500); }); }
     btnOX.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) { resetAllPreviews(); previewOX(); activeMenu = 'ox'; } }); btnOX.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'ox') resetOX(); }); btnOX.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying) return; if (activeMenu !== 'ox') { resetAllPreviews(); previewOX(); activeMenu = 'ox'; } else { executeOX(); } });
 
-    // ==== [수정됨] [7] MBTI 챗 로직 ====
+    // [7] MBTI 채팅창 (잔류 색상 버그 완벽 수정)
     const btnMBTI = document.getElementById('btn-mbti'); 
     let mbtiResult = "";
 
     function previewMBTI() { 
+      gsap.to(btnMBTI, { backgroundColor: '#888888', duration: 0.3 }); 
       gsap.to('#center-circle', { width: isMobile() ? 240 : 280, height: isMobile() ? 320 : 380, left: isMobile() ? -120 : -140, top: isMobile() ? -160 : -190, borderRadius: 20, duration: 0.5, ease: 'power2.out' }); 
       gsap.to('.base-circle:not(#btn-mbti)', { opacity: 0, scale: 0, duration: 0.3 }); 
       gsap.to('#mbti-panel', { opacity: 1, duration: 0.4 }); 
     }
     function resetMBTI() { 
       gsap.to('#center-circle', { width: isMobile() ? 90 : 120, height: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, top: isMobile() ? -45 : -60, borderRadius: 100, duration: 0.5, ease: 'power2.out' }); 
-      gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); 
+      gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 }); 
       gsap.to('#mbti-panel', { opacity: 0, duration: 0.4 }); 
+      
+      // GSAP 인라인 스타일 찌꺼기 완전 삭제 (버그 픽스 핵심)
+      gsap.set('.chat-bubble', { clearProps: 'all' }); 
       gsap.set('.chat-bubble', { opacity: 0, y: 10 }); 
+      gsap.set('.mbti-keyboard', { clearProps: 'all' });
       gsap.set('.mbti-keyboard', { opacity: 0, pointerEvents: 'none' }); 
+      gsap.set('.mbti-key', { clearProps: 'all' }); // 녹색 버튼으로 변한 흔적 지우기
+      
       document.getElementById('mbti-reply').style.display = 'none'; 
       document.getElementById('mbti-reply').innerText = ''; 
       document.querySelectorAll('.mbti-key').forEach(btn => btn.classList.remove('selected')); 
@@ -226,7 +246,6 @@
       isPlaying = true; 
       gsap.set(btnMBTI, { opacity: 0 }); 
       const tl = gsap.timeline(); 
-      // 말풍선 순서대로 애니메이션 (우측 -> 좌측)
       tl.to('#msg-1', { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' })
         .to('#msg-2', { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.5)' }, "+=0.6")
         .to('#mbti-kb', { opacity: 1, duration: 0.4, onComplete: () => { document.getElementById('mbti-kb').style.pointerEvents = 'auto'; }}, "+=0.4"); 
@@ -255,7 +274,6 @@
         if (mbtiResult.length === 4) { 
           document.getElementById('mbti-kb').style.pointerEvents = 'none'; 
           const replyBubble = document.getElementById('mbti-reply'); 
-          // [수정됨] 정답 전송 텍스트 자연스럽게 변경
           replyBubble.innerText = `너 ${mbtiResult}지!!`; 
           replyBubble.style.display = 'block'; 
           const tl = gsap.timeline(); 
@@ -267,12 +285,14 @@
     });
 
 
-    // [8] 러시안룰렛 
+    // [8] 러시안룰렛 (방아쇠 논리 버그 완벽 수정)
     const btnRussian = document.getElementById('btn-russian');
     const russianPanel = document.getElementById('russian-panel');
     const cylinderBox = document.getElementById('cylinder-box');
     const fireBtn = document.getElementById('fire-btn');
-    let cylinderSpin = 0; let isSpinning = false; 
+    
+    let cylinderSpin = 0;
+    let isSpinning = false; // 격발 중인지 확인
 
     for (let i = 0; i < 16; i++) {
       const chamber = document.createElement('div');
@@ -280,49 +300,69 @@
       chamber.style.setProperty('--i', i);
       cylinderBox.appendChild(chamber);
     }
+
     function previewRussian() {
+      gsap.to(btnRussian, { backgroundColor: '#888888', duration: 0.3 }); 
       const isMob = isMobile();
       gsap.to('#center-circle', { width: isMob ? 140 : 160, height: isMob ? 200 : 230, left: isMob ? -70 : -80, top: isMob ? -100 : -115, borderRadius: 25, backgroundColor: '#777777', duration: 0.4, ease: 'power2.out' });
       gsap.to('.base-circle:not(#btn-russian)', { opacity: 0, scale: 0, duration: 0.3 });
       gsap.to(russianPanel, { opacity: 1, duration: 0.4 });
     }
+
     function resetRussian() {
       const isMob = isMobile();
       gsap.to('#center-circle', { width: isMob ? 90 : 120, height: isMob ? 90 : 120, left: isMob ? -45 : -60, top: isMob ? -45 : -60, borderRadius: 100, backgroundColor: 'var(--color-center)', duration: 0.4, ease: 'power2.out' });
-      gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 });
+      gsap.to('.base-circle', { opacity: 1, scale: 1, backgroundColor: 'var(--color-small)', duration: 0.3 });
       gsap.to(btnRussian, { opacity: 1, pointerEvents: 'auto', duration: 0.3 });
       gsap.to(russianPanel, { opacity: 0, duration: 0.4 });
       fireBtn.style.pointerEvents = 'none';
       isSpinning = false;
     }
+
     function executeRussian() {
-      isPlaying = true; 
+      isPlaying = true; // 화면 Lock (바탕화면 클릭 방지용)
       gsap.set(btnRussian, { opacity: 0, pointerEvents: 'none' });
       fireBtn.style.pointerEvents = 'auto'; 
     }
+
     btnRussian.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) { resetAllPreviews(); previewRussian(); activeMenu = 'russian'; } });
     btnRussian.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && activeMenu !== 'russian') resetRussian(); });
-    btnRussian.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying) return; if (activeMenu !== 'russian') { resetAllPreviews(); previewRussian(); activeMenu = 'russian'; } else { executeRussian(); } });
+    btnRussian.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying) return;
+      if (activeMenu !== 'russian') { resetAllPreviews(); previewRussian(); activeMenu = 'russian'; }
+      else { executeRussian(); }
+    });
 
+    // 격발 버튼 (연속 클릭 꼬임 방지)
     fireBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (isSpinning) return; 
-      isSpinning = true;
+      isSpinning = true; // 돌아가는 중 잠금
+
       const isBang = Math.floor(Math.random() * 16) === 0;
       const spinDegree = 1440 + (Math.floor(Math.random() * 16) * 22.5);
       cylinderSpin += spinDegree;
+
       gsap.to(cylinderBox, {
-        rotation: cylinderSpin, duration: 1.5, ease: 'power4.out',
+        rotation: cylinderSpin,
+        duration: 1.5,
+        ease: 'power4.out',
         onComplete: () => {
           if (isBang) {
+            // [사망]
             const tl = gsap.timeline();
             tl.to('#flash-overlay', { opacity: 1, duration: 0.05 }) 
               .to('body', { x: 15, y: -15, yoyo: true, repeat: 7, duration: 0.05 }, 0) 
               .to('#flash-overlay', { opacity: 0, duration: 1 }) 
-              .call(() => { setTimeout(() => { resetRussian(); isPlaying = false; activeMenu = null; }, 500); });
+              .call(() => {
+                setTimeout(() => { resetRussian(); isPlaying = false; activeMenu = null; }, 500);
+              });
           } else {
+            // [생존] 계속 당길 수 있도록 Lock 해제
             const tl = gsap.timeline();
-            tl.to('#center-circle', { y: -10, duration: 0.05, yoyo: true, repeat: 1 }).call(() => { isSpinning = false; });
+            tl.to('#center-circle', { y: -10, duration: 0.05, yoyo: true, repeat: 1 }) 
+              .call(() => { isSpinning = false; });
           }
         }
       });
