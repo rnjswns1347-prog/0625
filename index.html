@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>1/16 Interaction - Darker & Game Over Logic</title>
+  <title>1/16 Interaction - Centered & Bold</title>
   <style>
     /* ==== 1. 반응형 변수 및 기본 설정 ==== */
     :root {
       --radius: 160px;
       --center-size: 120px;
       --small-size: 40px;
-      /* 컬러 변수 세팅 (전체적으로 진하게) */
       --color-center: #CCCCCC;
       --color-small: #E0E0E0;
       --color-dot: #999999;
@@ -22,6 +21,9 @@
         --center-size: 90px;
         --small-size: 38px;
       }
+      /* 모바일에서 시각적 정중앙을 맞추기 위해 텍스트 전체를 위로 살짝 올림 */
+      #fraction-box { transform: translateY(-30px); }
+      
       .char { font-size: 5rem !important; }
       .char.top { font-size: 4rem !important; transform: translateY(-1rem); }
       .char.slash { font-size: 6rem !important; }
@@ -35,10 +37,11 @@
     }
 
     /* ==== 2. 공통 UI 디자인 ==== */
-    #fraction-box { font-family: 'Times New Roman', serif; cursor: pointer; display: flex; align-items: center; z-index: 50; }
+    /* 폰트 굵기를 전체적으로 볼드(bold)로 통일 */
+    #fraction-box { font-family: 'Times New Roman', serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; z-index: 50; }
     .char { display: inline-block; font-size: 8rem; }
     .char.top { font-size: 6rem; transform: translateY(-2rem); }
-    .char.slash { font-size: 9rem; font-weight: 300; margin: 0 -10px; }
+    .char.slash { font-size: 9rem; margin: 0 -10px; } /* 슬래시의 얇은 속성(300) 제거하여 같이 볼드하게 */
     .char.bottom { font-size: 6rem; transform: translateY(2rem); }
 
     #circle-container { position: absolute; top: 50%; left: 50%; display: none; z-index: 10; }
@@ -49,7 +52,6 @@
       border-radius: 100px; display: flex; justify-content: center; align-items: center; overflow: hidden;
     }
 
-    /* 룰렛 대비 강화 */
     .roulette-wheel {
       position: absolute; width: 100%; height: 100%; opacity: 0;
       background: conic-gradient(
@@ -162,7 +164,7 @@
     }
 
     // ==========================================
-    // [1] 핀볼 로직 (색상 진하게 업데이트)
+    // [1] 핀볼 로직
     // ==========================================
     const btnPinball = document.getElementById('btn-pinball');
     let pinballTreeData = {};
@@ -173,9 +175,7 @@
       const startX = rect.left + rect.width / 2, startY = rect.top + rect.height / 2;
       const availableHeight = window.innerHeight - startY - 40, gapY = availableHeight / 4, startWidth = window.innerWidth * 0.75; 
 
-      ctx.strokeStyle = '#CCCCCC'; // 선 색상 진하게
-      ctx.fillStyle = '#999999'; // 핀(못) 색상 진하게
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = '#CCCCCC'; ctx.fillStyle = '#999999'; ctx.lineWidth = 1.5;
       function drawBranch(x, y, w, level) {
         ctx.beginPath(); ctx.arc(x, y, isMobile() ? 3 : 5, 0, Math.PI * 2); ctx.fill();
         if (level === 4) return;
@@ -229,7 +229,7 @@
       gsap.to('.base-circle, #center-circle', { opacity: 0, scale: 0, duration: 0.3 });
       ctx.clearRect(0, 0, canvas.width, canvas.height); ladderData.bridges = []; ladderData.columnsX = [];
       const margin = isMobile() ? 20 : 30, spacing = (canvas.width - margin * 2) / 15; ladderData.startY = isMobile() ? 60 : 80; ladderData.endY = canvas.height - ladderData.startY;
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)'; ctx.lineWidth = 2; // 선 진하게
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)'; ctx.lineWidth = 2; 
       for (let i = 0; i < 16; i++) { const x = margin + (i * spacing); ladderData.columnsX.push(x); ctx.beginPath(); ctx.moveTo(x, ladderData.startY); ctx.lineTo(x, ladderData.endY); ctx.stroke(); }
       const rows = 15, rowHeight = (ladderData.endY - ladderData.startY) / rows;
       for (let r = 1; r < rows; r++) { for (let c = 0; c < 15; c++) { if (Math.random() < 0.35) { ladderData.bridges.push({ y: ladderData.startY + (r * rowHeight) + (Math.random()*10-5), col1: c, col2: c + 1 }); c++; } } }
@@ -270,79 +270,53 @@
     });
 
     // ==========================================
-    // [4] 이진법 스위치 로직 (5회 제한 및 정답공개)
+    // [4] 이진법 스위치 로직
     // ==========================================
     const btnSwitch = document.getElementById('btn-switch'); 
-    let targetBinary = 0;
-    let switchAttempts = 0; // 시도 횟수 변수 추가
-
+    let targetBinary = 0; let switchAttempts = 0; 
     function previewSwitch() { gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle:not(#btn-switch)', { opacity: 0, scale: 0, duration: 0.3 }); gsap.to('#switch-panel', { opacity: 0.4, duration: 0.4 }); }
     function resetSwitch() { gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' }); gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 }); gsap.to('#switch-panel', { opacity: 0, duration: 0.4 }); }
     function executeSwitch() { 
-      isPlaying = true; 
-      switchAttempts = 0; // 실행 시 횟수 초기화
-      targetBinary = Math.floor(Math.random() * 15) + 1; 
+      isPlaying = true; switchAttempts = 0; targetBinary = Math.floor(Math.random() * 15) + 1; 
       gsap.set(btnSwitch, { opacity: 0, pointerEvents: 'none' }); 
       gsap.to('#switch-panel', { opacity: 1, duration: 0.3 }); 
       document.getElementById('switch-panel').style.pointerEvents = 'auto'; 
-      document.querySelectorAll('.switch-dot').forEach(dot => { dot.classList.remove('active'); gsap.set(dot, { backgroundColor: '#999999' }); }); 
+      document.querySelectorAll('.switch-dot').forEach(dot => { dot.classList.remove('active'); gsap.set(dot, { backgroundColor: 'var(--color-dot)' }); }); 
     }
-    
     btnSwitch.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) previewSwitch(); });
     btnSwitch.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying) resetSwitch(); });
     btnSwitch.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying) return; if (isMobile()) { if (activeMenu !== 'switch') { resetAllPreviews(); previewSwitch(); activeMenu = 'switch'; } else executeSwitch(); } else { executeSwitch(); } });
     
     document.querySelectorAll('.switch-dot').forEach(dot => {
       dot.addEventListener('click', function(e) {
-        e.stopPropagation(); 
-        this.classList.toggle('active'); 
-        gsap.to(this, { backgroundColor: this.classList.contains('active') ? '#333333' : '#999999', duration: 0.2 });
-        
-        let currentVal = 0; 
-        document.querySelectorAll('.switch-dot').forEach(d => { if (d.classList.contains('active')) currentVal += parseInt(d.getAttribute('data-bit')); });
-        
+        e.stopPropagation(); this.classList.toggle('active'); 
+        gsap.to(this, { backgroundColor: this.classList.contains('active') ? '#333333' : 'var(--color-dot)', duration: 0.2 });
+        let currentVal = 0; document.querySelectorAll('.switch-dot').forEach(d => { if (d.classList.contains('active')) currentVal += parseInt(d.getAttribute('data-bit')); });
         const isMobileEnv = window.innerWidth <= 600;
-        
         if (currentVal === targetBinary) {
-          // 정답 맞춤
           document.getElementById('switch-panel').style.pointerEvents = 'none'; 
           const tl = gsap.timeline();
           tl.to('.switch-dot', { backgroundColor: '#4CAF50', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 1 })
-            .to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3")
-            .to('#switch-panel', { opacity: 0, duration: 0.3 }, "<")
-            .to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 })
-            .call(() => { isPlaying = false; activeMenu = null; });
+            .to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; });
         } else {
-          // 오답 시도 횟수 증가
           switchAttempts++;
           if (switchAttempts >= 5) {
             document.getElementById('switch-panel').style.pointerEvents = 'none'; 
-            
-            // 정답인 스위치들만 필터링
             const correctDots = [];
-            document.querySelectorAll('.switch-dot').forEach(d => {
-              const bit = parseInt(d.getAttribute('data-bit'));
-              if ((targetBinary & bit) === bit) correctDots.push(d);
-            });
-
-            // 5번 틀리면 정답 공개 (노란색 점멸) 후 처음으로 복귀
+            document.querySelectorAll('.switch-dot').forEach(d => { const bit = parseInt(d.getAttribute('data-bit')); if ((targetBinary & bit) === bit) correctDots.push(d); });
             const tl = gsap.timeline();
             tl.to(correctDots, { backgroundColor: '#FFD700', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 3 })
-              .to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3")
-              .to('#switch-panel', { opacity: 0, duration: 0.3 }, "<")
-              .to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 })
-              .call(() => { isPlaying = false; activeMenu = null; });
+              .to('#center-circle', { width: isMobileEnv ? 90 : 120, left: isMobileEnv ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3").to('#switch-panel', { opacity: 0, duration: 0.3 }, "<").to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 }).call(() => { isPlaying = false; activeMenu = null; });
           }
         }
       });
     });
 
     // ==========================================
-    // [5] 제비뽑기 로직 (오답 시 정답 공개 로직 추가)
+    // [5] 제비뽑기 로직
     // ==========================================
     const btnLottery = document.getElementById('btn-lottery'); 
     let isLotteryLocked = false; let isLotteryPlayable = false; let winningLotteryElement = null;
-
     function previewLottery() { gsap.to('.extra-circle', { opacity: 1, scale: 1, duration: 0.3, stagger: 0.02 }); }
     function resetLottery() { if(!isLotteryLocked) gsap.to('.extra-circle', { opacity: 0, scale: 0, duration: 0.3 }); }
     function executeLottery() { 
@@ -353,7 +327,6 @@
       winningLotteryElement = allCircles[Math.floor(Math.random() * allCircles.length)]; 
       setTimeout(() => { isLotteryPlayable = true; }, 100); 
     }
-    
     btnLottery.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying && !isLotteryLocked) previewLottery(); });
     btnLottery.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && !isLotteryLocked) resetLottery(); });
     btnLottery.addEventListener('click', (e) => { e.stopPropagation(); if (isPlaying && !isLotteryLocked) return; if (isMobile()) { if (activeMenu !== 'lottery') { resetAllPreviews(); previewLottery(); activeMenu = 'lottery'; } else executeLottery(); } else { executeLottery(); } });
@@ -361,32 +334,12 @@
     document.querySelectorAll('.small-circle').forEach(circle => {
       circle.addEventListener('click', function(e) {
         if (!isLotteryLocked || !isLotteryPlayable) return; e.stopPropagation();
-        
         if (this === winningLotteryElement) {
-          // 바로 정답을 맞췄을 때
-          isLotteryPlayable = false; 
-          const tl = gsap.timeline();
-          tl.to(this, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 })
-            .to(this, { backgroundColor: '#E0E0E0', boxShadow: 'none', scale: 1, duration: 0.2 })
-            .call(() => { 
-              gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); 
-              gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); 
-              gsap.to('.small-circle', { opacity: 1, scale: 1, duration: 0.3 }); 
-              isLotteryLocked = false; isPlaying = false; activeMenu = null; 
-            });
+          isLotteryPlayable = false; const tl = gsap.timeline();
+          tl.to(this, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 }).to(this, { backgroundColor: 'var(--color-small)', boxShadow: 'none', scale: 1, duration: 0.2 }).call(() => { gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); gsap.to('.small-circle', { opacity: 1, scale: 1, duration: 0.3 }); isLotteryLocked = false; isPlaying = false; activeMenu = null; });
         } else {
-          // 잘못 뽑았을 때: 누른 것은 사라지고, 진짜 정답이 노란색으로 빛난 뒤 초기화
-          isLotteryPlayable = false; // 더 이상 클릭 방지
-          const tl = gsap.timeline();
-          tl.to(this, { opacity: 0, scale: 0, duration: 0.3 }) // 오답 숨기기
-            .to(winningLotteryElement, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 }, "+=0.2") // 정답 공개
-            .to(winningLotteryElement, { backgroundColor: '#E0E0E0', boxShadow: 'none', scale: 1, duration: 0.2 })
-            .call(() => { 
-              gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); 
-              gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); 
-              gsap.to('.small-circle', { opacity: 1, scale: 1, duration: 0.3 }); // 사라졌던 원 복구
-              isLotteryLocked = false; isPlaying = false; activeMenu = null; 
-            });
+          isLotteryPlayable = false; const tl = gsap.timeline();
+          tl.to(this, { opacity: 0, scale: 0, duration: 0.3 }).to(winningLotteryElement, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 }, "+=0.2").to(winningLotteryElement, { backgroundColor: 'var(--color-small)', boxShadow: 'none', scale: 1, duration: 0.2 }).call(() => { gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' }); gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 }); gsap.to('.small-circle', { opacity: 1, scale: 1, duration: 0.3 }); isLotteryLocked = false; isPlaying = false; activeMenu = null; });
         }
       });
     });
