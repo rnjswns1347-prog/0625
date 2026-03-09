@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>1/16 Interaction - Desktop & Mobile Hybrid</title>
+  <style>
+    /* ==== 1. 반응형 변수 및 기본 설정 ==== */
+    :root {
+      --radius: 160px; /* 데스크탑 배열 반지름 */
+      --center-size: 120px;
+      --small-size: 40px;
+    }
+    
+    /* 모바일 환경 세팅 (화면 폭 600px 이하) */
+    @media (max-width: 600px) {
+      :root {
+        --radius: 110px; /* 모바일: 간격 좁힘 */
+        --center-size: 90px; /* 모바일: 중앙 원 축소 */
+        --small-size: 35px;
+      }
+      .char { font-size: 5rem !important; }
+      .char.top { font-size: 4rem !important; transform: translateY(-1rem) !important; }
+      .char.slash { font-size: 6rem !important; }
+      .char.bottom { font-size: 4rem !important; transform: translateY(1rem) !important; }
+      .pointer { top: -140px !important; } 
+    }
+
+    body {
+      margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center;
+      background-color: #FFFFFF; overflow: hidden; font-family: sans-serif;
+      touch-action: none; /* 모바일 스와이프/줌 방지 */
+    }
+
+    /* ==== 2. 공통 UI 디자인 ==== */
+    #fraction-box { font-family: 'Times New Roman', serif; cursor: pointer; display: flex; align-items: center; z-index: 50; }
+    .char { display: inline-block; font-size: 8rem; }
+    .char.top { font-size: 6rem; transform: translateY(-2rem); }
+    .char.slash { font-size: 9rem; font-weight: 300; margin: 0 -10px; }
+    .char.bottom { font-size: 6rem; transform: translateY(2rem); }
+
+    #circle-container { position: absolute; top: 50%; left: 50%; display: none; z-index: 10; }
+    
+    .center-circle {
+      position: absolute; top: calc(var(--center-size) / -2); left: calc(var(--center-size) / -2);
+      width: var(--center-size); height: var(--center-size); background-color: #EAEAEA;
+      border-radius: 100px; display: flex; justify-content: center; align-items: center; overflow: hidden;
+    }
+
+    .roulette-wheel {
+      position: absolute; width: 100%; height: 100%; opacity: 0;
+      background: conic-gradient(
+        #FFFFFF 0deg 22.5deg, #EAEAEA 22.5deg 45deg, #FFFFFF 45deg 67.5deg, #EAEAEA 67.5deg 90deg,
+        #FFFFFF 90deg 112.5deg, #EAEAEA 112.5deg 135deg, #FFFFFF 135deg 157.5deg, #EAEAEA 157.5deg 180deg,
+        #FFFFFF 180deg 202.5deg, #EAEAEA 202.5deg 225deg, #FFFFFF 225deg 247.5deg, #EAEAEA 247.5deg 270deg,
+        #FFFFFF 270deg 292.5deg, #EAEAEA 292.5deg 315deg, #FFFFFF 315deg 337.5deg, #EAEAEA 337.5deg 360deg
+      );
+    }
+    .pointer { position: absolute; top: -190px; left: -15px; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #333333; opacity: 0; transform: translateY(-20px); z-index: 10; pointer-events: none;}
+
+    #switch-panel { position: absolute; display: flex; gap: 10px; opacity: 0; pointer-events: none; z-index: 20; }
+    .switch-dot { width: 20px; height: 20px; border-radius: 50%; background-color: #CCCCCC; cursor: pointer; }
+
+    .small-circle {
+      position: absolute; top: calc(var(--small-size) / -2); left: calc(var(--small-size) / -2);
+      width: var(--small-size); height: var(--small-size); background-color: #F5F5F5; border-radius: 50%;
+      transform: rotate(var(--deg)) translateY(calc(var(--radius) * -1)); 
+      opacity: 0; cursor: pointer; z-index: 20;
+    }
+    .extra-circle { pointer-events: none; }
+
+    canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; z-index: 5; }
+    #drag-avatar, #pinball-ball { position: absolute; width: var(--small-size); height: var(--small-size); background-color: #333333; border-radius: 50%; display: none; z-index: 100; }
+    #drag-avatar { cursor: grab; }
+    #pinball-ball { transform: translate(-50%, -50%); }
+  </style>
+</head>
+<body>
+
+  <div id="fraction-box">
+    <span class="char top" id="num-top">1</span><span class="char slash" id="slash">/</span>
+    <span class="char bottom" id="num-bot1">1</span><span class="char bottom" id="num-bot6">6</span>
+  </div>
+
+  <canvas id="interaction-canvas"></canvas>
+  <div id="drag-avatar"></div>
+  <div id="pinball-ball"></div>
+
+  <div id="circle-container">
+    <div class="center-circle" id="center-circle">
+      <div class="roulette-wheel" id="roulette-wheel"></div>
+      <div id="switch-panel">
+        <div class="switch-dot" data-bit="8"></div><div class="switch-dot" data-bit="4"></div>
+        <div class="switch-dot" data-bit="2"></div><div class="switch-dot" data-bit="1"></div>
+      </div>
+    </div>
+    <div class="pointer" id="roulette-pointer"></div>
+
+    <div class="small-circle base-circle" id="btn-pinball" style="--deg: 0deg;"></div>
+    <div class="small-circle base-circle" id="btn-roulette" style="--deg: 45deg;"></div>
+    <div class="small-circle base-circle" id="btn-ladder" style="--deg: 90deg;"></div>
+    <div class="small-circle base-circle" id="btn-switch" style="--deg: 135deg;"></div>
+    <div class="small-circle base-circle" id="btn-lottery" style="--deg: 180deg;"></div>
+    <div class="small-circle base-circle" style="--deg: 225deg;"></div>
+    <div class="small-circle base-circle" style="--deg: 270deg;"></div>
+    <div class="small-circle base-circle" style="--deg: 315deg;"></div>
+
+    <div class="small-circle extra-circle" style="--deg: 22.5deg;"></div><div class="small-circle extra-circle" style="--deg: 67.5deg;"></div>
+    <div class="small-circle extra-circle" style="--deg: 112.5deg;"></div><div class="small-circle extra-circle" style="--deg: 157.5deg;"></div>
+    <div class="small-circle extra-circle" style="--deg: 202.5deg;"></div><div class="small-circle extra-circle" style="--deg: 247.5deg;"></div>
+    <div class="small-circle extra-circle" style="--deg: 292.5deg;"></div><div class="small-circle extra-circle" style="--deg: 337.5deg;"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
+  
+  <script>
+    gsap.registerPlugin(Draggable);
+
+    // ==== 상태 및 환경 감지 ====
+    let isPlaying = false; 
+    let activeMenu = null; // 모바일용: 현재 미리보기 중인 메뉴
+    const isMobile = () => window.innerWidth <= 600; // 모바일 환경 체크
+
+    const canvas = document.getElementById('interaction-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+    // 시작 화면
+    document.getElementById('fraction-box').addEventListener('click', function(e) {
+      e.stopPropagation();
+      const tl = gsap.timeline();
+      tl.to('#num-top', { y: '100vh', rotation: 45, duration: 0.8, ease: 'power2.in' })
+        .to('#slash', { y: '100vh', rotation: -20, duration: 0.8, ease: 'power2.in' }, "-=0.6")
+        .to('#num-bot1', { y: '100vh', rotation: 30, duration: 0.8, ease: 'power2.in' }, "-=0.6")
+        .to('#num-bot6', { y: '100vh', rotation: -60, duration: 0.8, ease: 'power2.in' }, "-=0.6")
+        .set(this, { display: 'none' })
+        .set('#circle-container', { display: 'block' })
+        .fromTo('#center-circle', { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.7)' })
+        .to('.base-circle', { opacity: 1, duration: 0.4, stagger: 0.1, ease: 'power1.out' }, "-=0.2");
+    });
+
+    // ==== 공통 취소 로직 (모바일에서 배경 터치 시) ====
+    document.body.addEventListener('click', () => {
+      if (isMobile() && !isPlaying && activeMenu) resetAllPreviews();
+    });
+
+    function resetAllPreviews() {
+      if (activeMenu === 'pinball') resetPinball();
+      if (activeMenu === 'roulette') resetRoulette();
+      if (activeMenu === 'ladder') resetLadder();
+      if (activeMenu === 'switch') resetSwitch();
+      if (activeMenu === 'lottery') resetLottery();
+      activeMenu = null;
+    }
+
+
+    // ==========================================
+    // [1] 핀볼 로직
+    // ==========================================
+    const btnPinball = document.getElementById('btn-pinball');
+    let pinballTreeData = {};
+
+    function previewPinball() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const startX = window.innerWidth / 2, startY = window.innerHeight / 2 - (isMobile() ? 110 : 160);
+      const gapY = (window.innerHeight - startY - 50) / 4, startWidth = window.innerWidth * 0.7;
+      ctx.strokeStyle = '#EAEAEA'; ctx.fillStyle = '#CCCCCC'; ctx.lineWidth = 2;
+      function drawBranch(x, y, w, level) {
+        ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+        if (level === 4) return;
+        const nextY = y + gapY, leftX = x - w / 4, rightX = x + w / 4;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(leftX, nextY); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(rightX, nextY); ctx.stroke();
+        drawBranch(leftX, nextY, w / 2, level + 1); drawBranch(rightX, nextY, w / 2, level + 1);
+      }
+      drawBranch(startX, startY, startWidth, 0); pinballTreeData = { startX, startY, gapY, startWidth };
+      gsap.to('.base-circle:not(#btn-pinball), #center-circle', { opacity: 0, scale: 0, duration: 0.3 });
+      gsap.to(canvas, { opacity: 1, duration: 0.5 });
+    }
+    
+    function resetPinball() {
+      gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.3 });
+      gsap.to(canvas, { opacity: 0, duration: 0.3 });
+    }
+
+    function executePinball() {
+      isPlaying = true;
+      const ball = document.getElementById('pinball-ball');
+      gsap.set(btnPinball, { opacity: 0 }); gsap.set(ball, { display: 'block', x: pinballTreeData.startX, y: pinballTreeData.startY });
+      let currentX = pinballTreeData.startX, currentY = pinballTreeData.startY, currentW = pinballTreeData.startWidth;
+      const tl = gsap.timeline({
+        onComplete: () => { setTimeout(() => { gsap.to(canvas, { opacity: 0 }); gsap.set(ball, { display: 'none' }); gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05 }); isPlaying = false; activeMenu = null; }, 1000); }
+      });
+      for (let i = 0; i < 4; i++) {
+        currentX = (Math.random() < 0.5) ? currentX + currentW / 4 : currentX - currentW / 4; currentY += pinballTreeData.gapY; currentW /= 2;
+        tl.to(ball, { x: currentX, y: currentY, duration: 0.5, ease: 'bounce.out' });
+      }
+    }
+
+    // 데스크탑 & 모바일 이벤트 바인딩
+    btnPinball.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) previewPinball(); });
+    btnPinball.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying) resetPinball(); });
+    btnPinball.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying) return;
+      if (isMobile()) {
+        if (activeMenu !== 'pinball') { resetAllPreviews(); previewPinball(); activeMenu = 'pinball'; }
+        else executePinball();
+      } else { executePinball(); }
+    });
+
+    // ==========================================
+    // [2] 룰렛 로직
+    // ==========================================
+    const btnRoulette = document.getElementById('btn-roulette');
+    
+    function previewRoulette() {
+      gsap.to('#center-circle', { scale: isMobile() ? 2 : 2.5, duration: 0.5, ease: 'power2.out' });
+      gsap.to('#roulette-wheel', { opacity: 1, duration: 0.5 });
+      gsap.to('.base-circle:not(#btn-roulette)', { opacity: 0, scale: 0, duration: 0.3 });
+      gsap.to('#roulette-pointer', { opacity: 1, y: 0, duration: 0.4, delay: 0.2, ease: 'back.out(1.7)' });
+    }
+    function resetRoulette() {
+      gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'power2.out' });
+      gsap.to('#roulette-wheel', { opacity: 0, duration: 0.5 });
+      gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 });
+      gsap.to('#roulette-pointer', { opacity: 0, y: -20, duration: 0.3 });
+    }
+    function executeRoulette() {
+      isPlaying = true;
+      gsap.to('#center-circle', { rotation: "+=" + (1440 + Math.floor(Math.random() * 360)), duration: 4, ease: 'power4.out', onComplete: () => { isPlaying = false; activeMenu = null; } });
+    }
+
+    btnRoulette.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) previewRoulette(); });
+    btnRoulette.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying) resetRoulette(); });
+    btnRoulette.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying) return;
+      if (isMobile()) {
+        if (activeMenu !== 'roulette') { resetAllPreviews(); previewRoulette(); activeMenu = 'roulette'; }
+        else executeRoulette();
+      } else { executeRoulette(); }
+    });
+
+    // ==========================================
+    // [3] 사다리 로직
+    // ==========================================
+    const btnLadder = document.getElementById('btn-ladder');
+    let ladderData = { bridges: [], columnsX: [] };
+
+    function previewLadder() {
+      gsap.to('.base-circle, #center-circle', { opacity: 0, scale: 0, duration: 0.3 });
+      ctx.clearRect(0, 0, canvas.width, canvas.height); ladderData.bridges = []; ladderData.columnsX = [];
+      const margin = 30, spacing = (canvas.width - margin * 2) / 15, startY = 80, endY = canvas.height - 80;
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)'; ctx.lineWidth = 2;
+      for (let i = 0; i < 16; i++) { const x = margin + (i * spacing); ladderData.columnsX.push(x); ctx.beginPath(); ctx.moveTo(x, startY); ctx.lineTo(x, endY); ctx.stroke(); }
+      const rows = 15, rowHeight = (endY - startY) / rows;
+      for (let r = 1; r < rows; r++) { for (let c = 0; c < 15; c++) { if (Math.random() < 0.35) { ladderData.bridges.push({ y: startY + (r * rowHeight) + (Math.random()*10-5), col1: c, col2: c + 1 }); c++; } } }
+      ladderData.bridges.sort((a, b) => a.y - b.y);
+      gsap.to(canvas, { opacity: 1, duration: 0.5 });
+      gsap.set('#drag-avatar', { display: 'block', x: window.innerWidth/2 - 20, y: window.innerHeight/2 - 20, scale: 0 }); 
+      gsap.to('#drag-avatar', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' });
+    }
+    function resetLadder() {
+      gsap.to(canvas, { opacity: 0, duration: 0.5 });
+      gsap.to('#drag-avatar', { scale: 0, duration: 0.3, onComplete: () => document.getElementById('drag-avatar').style.display = 'none' });
+      gsap.to('.base-circle, #center-circle', { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05 });
+    }
+
+    btnLadder.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) previewLadder(); });
+    btnLadder.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying) resetLadder(); });
+    btnLadder.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying) return;
+      // 사다리 실행은 드래그로만 하므로, 모바일 1-tap일 때 미리보기만 열어줍니다.
+      if (isMobile() && activeMenu !== 'ladder') { resetAllPreviews(); previewLadder(); activeMenu = 'ladder'; }
+    });
+
+    Draggable.create('#drag-avatar', {
+      type: "x,y", onPress: function() { gsap.to(this.target, { scale: 0.8, duration: 0.2 }); },
+      onRelease: function() {
+        isPlaying = true;
+        gsap.to(this.target, { scale: 1, duration: 0.2 });
+        const currentX = this.endX + 20; let closestCol = 0, minDiff = Infinity;
+        ladderData.columnsX.forEach((colX, index) => { if (Math.abs(currentX - colX) < minDiff) { minDiff = Math.abs(currentX - colX); closestCol = index; } });
+        gsap.to(this.target, {
+          x: ladderData.columnsX[closestCol] - 20, y: 60, duration: 0.3,
+          onComplete: () => {
+            let currentCol = closestCol, currentY = 80;
+            const tl = gsap.timeline({
+              onUpdate: function() { const rect = document.getElementById('drag-avatar').getBoundingClientRect(); ctx.lineTo(rect.left + 20, rect.top + 20); ctx.stroke(); },
+              onComplete: () => { setTimeout(() => { resetLadder(); isPlaying = false; activeMenu = null; }, 1000); }
+            });
+            ctx.beginPath(); ctx.moveTo(ladderData.columnsX[currentCol], currentY); ctx.strokeStyle = '#333333'; ctx.lineWidth = 4;
+            for (let bridge of ladderData.bridges) {
+              if (bridge.col1 === currentCol || bridge.col2 === currentCol) {
+                tl.to('#drag-avatar', { y: bridge.y - 20, duration: Math.abs(bridge.y - currentY)/300, ease: "none" });
+                currentCol = (currentCol === bridge.col1) ? bridge.col2 : bridge.col1;
+                tl.to('#drag-avatar', { x: ladderData.columnsX[currentCol] - 20, duration: 0.2, ease: "none" }); currentY = bridge.y;
+              }
+            }
+            tl.to('#drag-avatar', { y: canvas.height - 120, duration: Math.abs(canvas.height - 100 - currentY)/300, ease: "none" });
+          }
+        });
+      }
+    });
+
+    // ==========================================
+    // [4] 이진법 스위치 로직
+    // ==========================================
+    const btnSwitch = document.getElementById('btn-switch');
+    let targetBinary = 0;
+
+    function previewSwitch() {
+      gsap.to('#center-circle', { width: isMobile() ? 180 : 220, left: isMobile() ? -90 : -110, duration: 0.4, ease: 'power2.out' });
+      gsap.to('.base-circle:not(#btn-switch)', { opacity: 0, scale: 0, duration: 0.3 });
+      gsap.to('#switch-panel', { opacity: 0.4, duration: 0.4 });
+    }
+    function resetSwitch() {
+      gsap.to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.4, ease: 'power2.out' });
+      gsap.to('.base-circle', { opacity: 1, scale: 1, duration: 0.3 });
+      gsap.to('#switch-panel', { opacity: 0, duration: 0.4 });
+    }
+    function executeSwitch() {
+      isPlaying = true;
+      targetBinary = Math.floor(Math.random() * 15) + 1;
+      gsap.set(btnSwitch, { opacity: 0, pointerEvents: 'none' }); 
+      gsap.to('#switch-panel', { opacity: 1, duration: 0.3 }); 
+      document.getElementById('switch-panel').style.pointerEvents = 'auto'; 
+      document.querySelectorAll('.switch-dot').forEach(dot => {
+        dot.classList.remove('active'); gsap.set(dot, { backgroundColor: '#CCCCCC' });
+      });
+    }
+
+    btnSwitch.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying) previewSwitch(); });
+    btnSwitch.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying) resetSwitch(); });
+    btnSwitch.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying) return;
+      if (isMobile()) {
+        if (activeMenu !== 'switch') { resetAllPreviews(); previewSwitch(); activeMenu = 'switch'; }
+        else executeSwitch();
+      } else { executeSwitch(); }
+    });
+
+    document.querySelectorAll('.switch-dot').forEach(dot => {
+      dot.addEventListener('click', function(e) {
+        e.stopPropagation();
+        this.classList.toggle('active');
+        gsap.to(this, { backgroundColor: this.classList.contains('active') ? '#333333' : '#CCCCCC', duration: 0.2 });
+
+        let currentVal = 0;
+        document.querySelectorAll('.switch-dot').forEach(d => { if (d.classList.contains('active')) currentVal += parseInt(d.getAttribute('data-bit')); });
+
+        if (currentVal === targetBinary) {
+          document.getElementById('switch-panel').style.pointerEvents = 'none'; 
+          const tl = gsap.timeline();
+          tl.to('.switch-dot', { backgroundColor: '#4CAF50', duration: 0.2, stagger: 0.05, yoyo: true, repeat: 1 })
+            .to('#center-circle', { width: isMobile() ? 90 : 120, left: isMobile() ? -45 : -60, duration: 0.5, ease: 'power2.out' }, "+=0.3")
+            .to('#switch-panel', { opacity: 0, duration: 0.3 }, "<")
+            .to('.base-circle', { opacity: 1, scale: 1, pointerEvents: 'auto', duration: 0.4, stagger: 0.05 })
+            .call(() => { isPlaying = false; activeMenu = null; });
+        }
+      });
+    });
+
+    // ==========================================
+    // [5] 제비뽑기 로직
+    // ==========================================
+    const btnLottery = document.getElementById('btn-lottery');
+    let isLotteryLocked = false; let isLotteryPlayable = false; let winningLotteryElement = null;
+
+    function previewLottery() { gsap.to('.extra-circle', { opacity: 1, scale: 1, duration: 0.3, stagger: 0.02 }); }
+    function resetLottery() { if(!isLotteryLocked) gsap.to('.extra-circle', { opacity: 0, scale: 0, duration: 0.3 }); }
+    function executeLottery() {
+      if (isLotteryLocked) return;
+      isPlaying = true; isLotteryLocked = true;
+      gsap.set('.extra-circle', { pointerEvents: 'auto' });
+      gsap.to('#center-circle', { scale: 0, duration: 0.4, ease: 'back.in(1.5)' });
+      
+      const allCircles = document.querySelectorAll('.small-circle');
+      winningLotteryElement = allCircles[Math.floor(Math.random() * allCircles.length)];
+      setTimeout(() => { isLotteryPlayable = true; }, 100);
+    }
+
+    btnLottery.addEventListener('mouseenter', () => { if(!isMobile() && !isPlaying && !isLotteryLocked) previewLottery(); });
+    btnLottery.addEventListener('mouseleave', () => { if(!isMobile() && !isPlaying && !isLotteryLocked) resetLottery(); });
+    btnLottery.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isPlaying && !isLotteryLocked) return;
+      if (isMobile()) {
+        if (activeMenu !== 'lottery') { resetAllPreviews(); previewLottery(); activeMenu = 'lottery'; }
+        else executeLottery();
+      } else { executeLottery(); }
+    });
+
+    document.querySelectorAll('.small-circle').forEach(circle => {
+      circle.addEventListener('click', function(e) {
+        if (!isLotteryLocked || !isLotteryPlayable) return;
+        e.stopPropagation();
+        
+        if (this === winningLotteryElement) {
+          isLotteryPlayable = false; 
+          const tl = gsap.timeline();
+          tl.to(this, { backgroundColor: '#FFD700', boxShadow: '0 0 20px #FFD700', scale: 1.2, duration: 0.2, yoyo: true, repeat: 3 })
+            .to(this, { backgroundColor: '#F5F5F5', boxShadow: 'none', scale: 1, duration: 0.2 })
+            .call(() => {
+              gsap.to('#center-circle', { scale: 1, duration: 0.5, ease: 'back.out(1.5)' });
+              gsap.to('.extra-circle', { opacity: 0, scale: 0, pointerEvents: 'none', duration: 0.3 });
+              gsap.to('.small-circle', { opacity: 1, scale: 1, duration: 0.3 });
+              isLotteryLocked = false; isPlaying = false; activeMenu = null;
+            });
+        } else {
+          gsap.to(this, { opacity: 0, scale: 0, duration: 0.3 });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
